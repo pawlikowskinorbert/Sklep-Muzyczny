@@ -1,7 +1,10 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\.github\\workflows",
+    "\\projekt",
+    "\\projekt\\Project"
   ],
-  "SelectedNode": "\\C:\\Users\\pawli\\Source\\Repos\\Sklep-Muzyczny",
+  "SelectedNode": "\\projekt\\Project\\Project.sln",
   "PreviewInSolutionExplorer": false
 }

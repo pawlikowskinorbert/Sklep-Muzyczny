@@ -1,0 +1,82 @@
+@using Project.Interfaces
+@model IPagination
+
+@{
+    int totalPages = (int)Math.Ceiling((double)Model.Count / Model.PageSize);
+}
+
+<nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+        <!-- Przycisk "Poprzednia" -->
+        @if (Model.PageIndex > 1)
+        {
+            <li class="page-item">
+                <a class="page-link" href="@BuildPageUrl(Model.PageIndex - 1)">Previous</a>
+            </li>
+        }
+        else
+        {
+            <li class="page-item disabled">
+                <span class="page-link">Previous</span>
+            </li>
+        }
+
+        <!-- Numery stron -->
+        @for (int i = 1; i <= totalPages; i++)
+        {
+            if (i == Model.PageIndex)
+            {
+                <li class="page-item active">
+                    <span class="page-link">@i</span>
+                </li>
+            }
+            else
+            {
+                <li class="page-item">
+                    <a class="page-link" href="@BuildPageUrl(i)">@i</a>
+                </li>
+            }
+        }
+
+        <!-- Przycisk "Następna" -->
+        @if (Model.PageIndex < totalPages)
+        {
+            <li class="page-item">
+                <a class="page-link" href="@BuildPageUrl(Model.PageIndex + 1)">Next</a>
+            </li>
+        }
+        else
+        {
+            <li class="page-item disabled">
+                <span class="page-link">Next</span>
+            </li>
+        }
+    </ul>
+</nav>
+
+@functions {
+    string BuildPageUrl(int pageIndex)
+    {
+        var routeValues = new Dictionary<string, object>();
+
+        foreach (var key in Context.Request.Query.Keys)
+        {
+            if (key != "pageIndex" && key != "pageSize")
+            {
+                routeValues[key] = Context.Request.Query[key];
+            }
+        }
+
+        // Ustawiamy nowy 'pageIndex' i zachowujemy 'pageSize'
+        routeValues["pageIndex"] = pageIndex;
+        routeValues["pageSize"] = Model.PageSize;
+
+        // Pobieramy bieżącą akcję i kontroler
+        var actionName = Context.Request.RouteValues["action"]?.ToString();
+        var controllerName = Context.Request.RouteValues["controller"]?.ToString();
+
+
+        
+        return Url.Action(actionName, controllerName, routeValues) ??  string.Empty;
+    }
+}

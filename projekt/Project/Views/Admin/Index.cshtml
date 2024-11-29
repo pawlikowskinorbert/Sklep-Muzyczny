@@ -1,0 +1,152 @@
+@using Project.Helpers
+@using Project.Specifications
+@using Microsoft.AspNetCore.Mvc.Rendering
+@model ProductListViewModel
+
+
+
+
+@{
+    string sortText;
+    switch (ViewBag.CurrentSort)
+    {
+        case "priceasc":
+            sortText = "Price Ascending";
+            break;
+        case "pricedesc":
+            sortText = "Price Descending";
+            break;
+        case "nameasc":
+            sortText = "Name A-Z";
+            break;
+        case "namedesc":
+            sortText = "Name Z-A";
+            break;
+        default:
+            sortText = "None";
+            break;
+    }
+}
+
+
+<form method="get" class="d-flex flex-wrap">
+    <!-- Search field -->
+    <div class="form-group me-2">
+        @Html.Label("Search", "Search:")
+        @Html.TextBox("Search", Model.SpecParams.Search, new { @class = "form-control", placeholder = "Search..." })
+    </div>
+
+    <div class="form-group me-2">
+        @Html.Label("CategoryId", "Category:")
+        @Html.DropDownList("CategoryId", Model.Categories, "All", new { @class = "form-control" })
+    </div>
+
+    <!-- Brand filter -->
+    <div class="form-group me-2">
+        @Html.Label("BrandId", "Brand:")
+        @Html.DropDownList("BrandId", Model.Brands, "All", new { @class = "form-control" })
+    </div>
+
+    <!-- Type filter -->
+    <div class="form-group me-2">
+        @Html.Label("TypeId", "Type:")
+        @Html.DropDownList("TypeId", Model.Types, "All", new { @class = "form-control" })
+    </div>
+
+    <!-- Sorting -->
+    <div class="form-group me-2">
+        @Html.Label("Sort", "Sort By:")
+        @Html.DropDownList("Sort", new SelectList(
+                 new List<SelectListItem>
+        {
+        new SelectListItem { Text = "Brak", Value = "" },
+        new SelectListItem { Text = "Price Ascending", Value = "priceasc" },
+        new SelectListItem { Text = "Price Descending", Value = "pricedesc" },
+        new SelectListItem { Text = "Name A-Z", Value = "nameasc" },
+        new SelectListItem { Text = "Name Z-A", Value = "namedesc" }
+        }, "Value", "Text", Model.SpecParams.Sort), "Wybierz", new { @class = "form-control" })
+    </div>
+
+    <!-- Submit and Clear buttons -->
+    <button type="submit" class="btn btn-primary me-2">Search and Filter</button>
+    <button type="button" class="btn btn-danger" onclick="window.location.href='@Url.Action("Index", "Product")'">Clear
+        Filters</button>
+</form>
+
+<script>
+    function setDropdownText(text) {
+        document.getElementById("dropdownMenuButton").textContent = text;
+    }
+</script>
+
+
+
+
+<h3>Products: </h3>
+
+<form action="">
+    <table class="table table-responsive table-hover">
+        @if (Model.Pagination.Data.Any())
+        {
+            <thead>
+                <tr class="table-active">
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Photo</th>
+                    <th>Price</th>
+                    <th>Brand</th>
+                    <th>ProductType</th>
+                    <th>ActionButtons</th>
+                </tr>
+            </thead>
+        }
+
+        <tbody>
+            @if (Model.Pagination.Data.Any())
+            {
+                @foreach (var product in Model.Pagination.Data)
+                {
+
+                    <tr>
+                        <td>@product.Id </td>
+                        <td><a href="Product/Details/@product.Id">@product.Name</a></td>
+                        <td>@product.Description</td>
+                        <td><img src="@Url.Content(product.PhotoUrl)" alt="Product Image"
+                                style="width: 100px; padding-right: 30px; height: auto;"></td>
+                        <td>@product.Price $</td>
+                        <td>@(product.Brand?.Name ?? "Unknown")</td>
+                        <td>@(product.ProductType?.Name ?? "Unknown")</td>
+
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@product.Id">Edytuj</a>|
+                                <a asp-action="Delete" asp-route-id="@product.Id">Usuń</a>
+                            </td>
+                        }
+                    </tr>
+                }
+            }
+            else
+            {
+                <div class="alert alert-warning text-center" role="alert">
+                    No items was found : (
+                </div>
+            }
+
+        </tbody>
+    </table>
+
+    @if (User.IsInRole("Admin"))
+    {
+        <p>
+            <a asp-action="Create" class="btn btn-primary">Dodaj Nowy Produkt</a>
+        </p>
+    }
+</form>
+
+
+
+
+@await Html.PartialAsync("_Pagination", Model.Pagination)

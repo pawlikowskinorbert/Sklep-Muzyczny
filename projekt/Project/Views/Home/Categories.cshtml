@@ -1,0 +1,20 @@
+@model IEnumerable<Category>
+
+
+<div class="row">
+    @foreach (var category in Model)
+    {
+        <div class="col-md-3 mb-2 d-flex">
+            <div class="card h-100 w-100">
+                <a
+                    href="@Url.Action("Index", "Product", new { Search = "", CategoryId = category.Id, BrandId = "", TypeId = "", Sort = "" })">
+                    <img src="@category.PhotoUrl" class="card-img-top img-fluid" style="height: 180px; object-fit: cover;"
+                        alt="@category.Name">
+                    <div class="card-body d-flex flex-column justify-content-between">
+                        <h5 class="card-title text-center">@category.Name</h5>
+                    </div>
+                </a>
+            </div>
+        </div>
+    }
+</div>

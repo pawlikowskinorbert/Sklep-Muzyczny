@@ -1,0 +1,64 @@
+@model Project.Models.Product
+
+
+<div class="container my-5">
+    <div class="row">
+        <!-- Sekcja zdjęcia produktu -->
+        <div class="col-md-6">
+            <img src="@Url.Content("/" + Model.PhotoUrl)" class="img-fluid rounded shadow mt-1" alt="@Model.Name"
+                style="width: 100%; max-height: 430px; object-fit: cover;">
+        </div>
+
+        <!-- Sekcja informacji o produkcie -->
+        <div class="col-md-6">
+            <h1 class="display-5 mb-3">@Model.Name</h1>
+
+            <!-- Cena produktu -->
+            <h3 class="text-success mb-4">@Model.Price.ToString()$</h3>
+
+            <!-- Opis produktu -->
+            <p class="lead mb-4">@Model.Description</p>
+
+            <!-- Szczegóły produktu -->
+            <ul class="list-group mb-4">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>Brand:</strong>
+                    <span>@Model.Brand?.Name</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>Type:</strong>
+                    <span>@Model.ProductType?.Name</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>Quantity In Stock:</strong>
+                    <span>@(Model.QuantityInStoct > 0 ? $"{Model.QuantityInStoct} in stock" : "Brak w magazynie")</span>
+                </li>
+
+                <!-- Dodajemy specyfikacje produktu -->
+                @foreach (var detail in Model.ProductDetails)
+                {
+                    string formattedValue = detail.Value;
+                    if (bool.TryParse(detail.Value, out var boolValue))
+                    {
+                        formattedValue = boolValue ? "Yes" : "No";
+                    }
+
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <strong>@detail.SpecificationDefinition?.DisplayName:</strong>
+                        <span>@formattedValue</span>
+                    </li>
+                }
+            </ul>
+
+            <!-- Przycisk akcji -->
+            <button class="btn btn-primary btn-lg w-100 mb-2" @(Model.QuantityInStoct > 0 ? "" : "disabled")>
+                Dodaj do koszyka
+            </button>
+
+            <!-- Link powrotny -->
+            <a href="@Url.Action("Index", "Product")" class="btn btn-secondary btn-lg w-100">
+                Wróć do listy produktów
+            </a>
+        </div>
+    </div>
+</div>

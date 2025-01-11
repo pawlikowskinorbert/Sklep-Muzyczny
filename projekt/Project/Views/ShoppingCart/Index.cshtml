@@ -1,0 +1,106 @@
+@model ShoppingCartViewModel
+
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Success"]
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger margin">
+        @TempData["Error"]
+    </div>
+}
+
+<div class="container " style="margin-top: 90px;">
+    <h2>Twój Koszyk</h2>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Produkt</th>
+                <th>Cena</th>
+                <th>Ilość</th>
+                <th>Razem</th>
+                <th>Usuń</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Items)
+            {
+                <tr>
+                    <td>@item.ProductName</td>
+                    <td>@item.Price</td>
+                    <td>
+                        <!-- Formularz aktualizacji ilości -->
+                        <form asp-action="Update" asp-controller="ShoppingCart" method="post"
+                            style="display: inline-block;">
+                            <!-- ID itemu z bazy (może być 0 dla niezalogowanych) -->
+                            <input type="hidden" name="itemId" value="@item.Id" />
+                            <!-- Faktyczny ID produktu -->
+                            <input type="hidden" name="productId" value="@item.ProductId" />
+
+                            <input type="number" name="quantity" value="@item.Quantity" min="1" style="width:60px;" />
+                            <button type="submit" class="btn btn-sm btn-primary">Aktualizuj</button>
+                        </form>
+                    </td>
+                    <td>@item.TotalPrice</td>
+                    <td>
+                        <!-- Formularz usunięcia -->
+                        <form asp-action="Remove" asp-controller="ShoppingCart" method="post"
+                            style="display: inline-block;">
+                            <input type="hidden" name="itemId" value="@item.Id" />
+                            <input type="hidden" name="productId" value="@item.ProductId" />
+                            <button type="submit" class="btn btn-sm btn-danger">Usuń</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <p>Razem: @Model.Items.Sum(i => i.TotalPrice).ToString()</p>
+
+    <div class="d-flex justify-content-between mt-4">
+        <a href="@Url.Action("Index", "Product")" class="btn btn-secondary ">
+            Wróć do przeglądania produktów
+        </a>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <form asp-action="FinalizeOrder" asp-controller="Order" method="post">
+                <button type="submit" class="btn btn-success btn-lg">Finalizuj zamówienie</button>
+            </form>
+        }
+        else
+        {
+            <button type="button" class="btn btn-success btn-lg" data-bs-toggle="modal" data-bs-target="#loginPromptModal">
+                Finalizuj zamówienie
+            </button>
+        }
+    </div>
+</div>
+
+
+<div class="modal fade" id="loginPromptModal" tabindex="-1" aria-labelledby="loginPromptModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="loginPromptModalLabel">Zaloguj się, aby kontynuować</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Musisz być zalogowany, aby sfinalizować zamówienie.</p>
+            </div>
+            <div class="modal-footer">
+                <a href="@Url.Action("Login", "Account", new { returnUrl = Url.Action("Index", "ShoppingCart") })"
+                    class="btn btn-primary">
+                    Zaloguj się
+                </a>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Powrót do koszyka</button>
+            </div>
+        </div>
+    </div>
+</div>

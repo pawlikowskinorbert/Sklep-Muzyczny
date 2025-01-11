@@ -17,9 +17,8 @@ html {
   min-height: 100%;
 }
 
-body {
-  margin-bottom: 60px;
-}
+
+
 
 a{
   text-decoration: none;
@@ -34,3 +33,72 @@ a:hover{
 }
 
 
+.hero {
+  background-color: #1a3264; /* Dopasuj kolor tła */
+  color: white;
+  text-align: center;
+  padding: 100px 15px;
+}
+.hero .btn {
+  background-color: black;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+}
+.hero .btn:hover {
+  background-color: #333;
+}
+.hero img {
+  max-width: 150px;
+  margin: 20px 0;
+}
+
+
+.product-card {
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+.product-card img {
+  height: 200px;
+  object-fit: contain;
+}
+.badge-custom {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: #f00;
+  color: #fff;
+  padding: 5px 10px;
+  font-size: 12px;
+  border-radius: 5px;
+}
+
+
+.product-card{
+  min-height: 100px;
+}
+
+.myfooter{
+  background-color: #1a3264; 
+}
+
+/* 
+.btn-primary, .btn-danger {
+  font-size: 14px !important;
+  padding: 2px 8px !important;
+  height: 25px !important;
+} */
+
+
+.action-buttons {
+  display: flex;
+  gap: 10px; /* Odstęp między przyciskami */
+  justify-content: center;
+  align-items: center;
+}
+
+
+.table td {
+  vertical-align: middle; /* Wyrównuje zawartość do środka pionowo */
+}

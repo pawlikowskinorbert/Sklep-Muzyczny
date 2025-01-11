@@ -26,7 +26,6 @@ namespace Project.Models
 		[Range(0.01, double.MaxValue, ErrorMessage = "Cena musi być większa od zera")]
 		public decimal Price { get; set; }
 		
-
 		public int QuantityInStock { get; set; }
 
 		public int ProductTypeId { get; set; }

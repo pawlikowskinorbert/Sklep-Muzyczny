@@ -2,7 +2,69 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+@model IEnumerable<Product>
+
+
+<div class="hero container-fluid py-5">
+    <h1 class="display-3 pt-0"><span style="color: white;">Shopen</span><span style="color: lightgray;">Hauer</span>
+    </h1>
+    <img src="assets/images/images/LogoWlodekBiale.png" style="width: 80px;" class="mx-3" alt="">
+    <p class="mt-3">Sklep muzyczny z najlepszym sprzętem wyselekcjonowanym przez braci Kacperskich</p>
+    <a asp-controller="Product" asp-action="Index" class="btn mt-3">Przeglądaj Produkty!</a>
+
 </div>
+
+<div class="container mt-5 mb-3">
+    <h2 class="text-center mb-4">Produkty na czasie</h2>
+    <div class="row g-4">
+        <!-- Gitara -->
+        <div class="col-md-4">
+            <div class="card product-card">
+                <a asp-controller="Product" asp-action="Details" asp-route-id="@ViewBag.Guitar.Id">
+                    <img src="@ViewBag.Guitar.PhotoUrl" class="card-img-top" alt="@ViewBag.Guitar.Name">
+                </a>
+                <span class="badge bg-primary position-absolute top-0 start-0 m-2">Nowe</span>
+
+                <div class="card-body">
+                    <h5 class="card-title">@ViewBag.Guitar.Name</h5>
+                    <p class="card-text">@ViewBag.Guitar.Price $</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pianino -->
+        <div class="col-md-4">
+            <div class="card product-card">
+                <a asp-controller="Product" asp-action="Details" asp-route-id="@ViewBag.Piano.Id">
+                    <img src="@ViewBag.Piano.PhotoUrl" class="card-img-top" alt="@ViewBag.Piano.Name">
+                </a>
+                <span class="badge bg-success position-absolute top-0 start-0 m-2">Best Seller</span>
+
+                <div class="card-body">
+                    <h5 class="card-title">@ViewBag.Piano.Name</h5>
+                    <p class="card-text">@ViewBag.Piano.Price $</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Perkusja -->
+        <div class="col-md-4">
+            <div class="card product-card">
+                <a asp-controller="Product" asp-action="Details" asp-route-id="@ViewBag.Drums.Id">
+                    <img src="@ViewBag.Drums.PhotoUrl" class="card-img-top" alt="@ViewBag.Drums.Name">
+                </a>
+                <span class="badge bg-warning text-dark position-absolute top-0 start-0 m-2">Promocja</span>
+
+                <div class="card-body">
+                    <h5 class="card-title">@ViewBag.Drums.Name</h5>
+                    <p class="card-text">@ViewBag.Drums.Price $</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+

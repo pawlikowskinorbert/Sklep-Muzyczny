@@ -1,0 +1,59 @@
+@model List<UserViewModel>
+
+<div class="container" style="margin-top: 100px;">
+
+    <h2>Users</h2>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Is Active</th>
+                <th>Roles</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model)
+            {
+                <tr class="@(!user.IsActive ? "table-danger" : "")"> <!-- Dodano styl dla dezaktywowanych -->
+                    <td>@user.UserName</td>
+                    <td>@user.Email</td>
+                    <td>@user.IsActive</td>
+                    <td>@user.Roles</td>
+                    <td>
+                        @if (user.IsActive)
+                        {
+                            <form asp-action="Deactivate" method="post" style="display:inline;">
+                                <input type="hidden" name="id" value="@user.Id" />
+                                <button class="btn btn-danger" type="submit">Deactivate</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <form asp-action="Activate" method="post" style="display:inline;">
+                                <input type="hidden" name="id" value="@user.Id" />
+                                <button class="btn btn-success" type="submit">Activate</button>
+                            </form>
+                        }
+
+                        <form asp-action="ChangeRole" method="post" style="display:inline;">
+                            <input type="hidden" name="id" value="@user.Id" />
+                            <select name="newRole" class="form-select" style="width:auto; display:inline-block;"
+                            @(!user.IsActive ? "disabled" : "")>
+                                <option disabled selected>Wybierz rolę</option>
+                                <option value="Admin">Admin</option>
+                                <option value="User">User</option>
+                                <option value="Employee">Employee</option>
+                            </select>
+                            <button class="btn btn-primary" type="submit" @(!user.IsActive ? "disabled" : "")>Change
+                                Role</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>

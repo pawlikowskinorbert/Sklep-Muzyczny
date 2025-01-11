@@ -16,5 +16,7 @@ namespace Project.Models
 		
 		public ShoppingCart? ShoppingCart { get; set; }
 		
+		public bool IsActive {get;set;} = true;
+		
 	}
 }

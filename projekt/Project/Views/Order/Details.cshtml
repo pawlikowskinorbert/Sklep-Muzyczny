@@ -1,0 +1,31 @@
+@model Order
+
+<div class="container" style="margin-top: 90px;">
+    <h2>Szczegóły zamówienia</h2>
+    
+    <p>Data zamówienia: @Model.CreatedAt.ToString()</p>
+    <p>Status: @Model.Status</p>
+    <p>Łączna kwota: @Model.TotalAmount.ToString()</p>
+    
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Produkt</th>
+                <th>Cena</th>
+                <th>Ilość</th>
+                <th>Razem</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.OrderItems)
+            {
+                <tr>
+                    <td>@item.ProductName</td>
+                    <td>@item.Price.ToString()</td>
+                    <td>@item.Quantity</td>
+                    <td>@(item.Quantity * item.Price) $</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

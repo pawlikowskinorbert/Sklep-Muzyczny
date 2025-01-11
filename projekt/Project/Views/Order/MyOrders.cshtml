@@ -1,0 +1,58 @@
+@model Project.Helpers.Pagination<Project.Models.Order>
+
+<div class="container " style="margin-top: 100px;">
+    <h2 class="mb-4">Twoje zamówienia</h2>
+
+    @if (!Model.Data.Any())
+    {
+        <div class="alert alert-warning" role="alert">
+            Nie masz jeszcze żadnych zamówień.
+        </div>
+    }
+    else
+    {
+        <div class="accordion mb-5" id="ordersAccordion">
+            @foreach (var order in Model.Data)
+            {
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading-@order.Id">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-@order.Id" aria-expanded="false" aria-controls="collapse-@order.Id">
+                            Zamówienie #@order.Id - @order.CreatedAt.ToString("yyyy-MM-dd")
+                        </button>
+                    </h2>
+                    <div id="collapse-@order.Id" class="accordion-collapse collapse" aria-labelledby="heading-@order.Id" data-bs-parent="#ordersAccordion">
+                        <div class="accordion-body">
+                            <p><strong>Status:</strong> @order.Status</p>
+                            <p><strong>Łączna kwota:</strong> @order.TotalAmount.ToString("C")</p>
+                            <h5>Produkty:</h5>
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Nazwa produktu</th>
+                                        <th>Ilość</th>
+                                        <th>Cena jednostkowa</th>
+                                        <th>Razem</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in order.OrderItems)
+                                    {
+                                        <tr>
+                                            <td>@item.ProductName</td>
+                                            <td>@item.Quantity</td>
+                                            <td>@item.Price.ToString("C")</td>
+                                            <td>@(item.Quantity * item.Price) zł</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <!-- Wywołanie paginacji -->
+        @await Html.PartialAsync("_Pagination", Model)
+    }
+</div>

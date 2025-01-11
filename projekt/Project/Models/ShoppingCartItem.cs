@@ -16,5 +16,7 @@ namespace Project.Models
 
 		[Range(1, int.MaxValue, ErrorMessage ="Ilość musi być większa niż 0!!!!!!!!!!! > __ < ")]		
 		public int Quantity { get; set; }
+		
+		public int MaxQuantity { get; set; }
 	}
 }

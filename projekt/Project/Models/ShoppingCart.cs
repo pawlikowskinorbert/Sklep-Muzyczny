@@ -10,6 +10,6 @@ namespace Project.Models
 		public string? AppUserId { get; set; }
 		public AppUser? AppUser { get; set; }
 		
-		public ICollection<ShoppingCartItem>? ShoppingCartItems { get; set; }
+		public ICollection<ShoppingCartItem>? ShoppingCartItems { get; set; } = new List<ShoppingCartItem>();
 	}
 }

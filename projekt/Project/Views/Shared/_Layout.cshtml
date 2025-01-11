@@ -1,10 +1,22 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Success"]
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Error"]
+    </div>
+}
 
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Project</title>
+    <title>@ViewData["Title"] - ShopenHauer</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
         integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -15,9 +27,12 @@
 
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow fixed-top "
+            style="">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Project</a>
+                <img src="~/assets/images/images/LogoWlodek.png" style="width: 40px;" class="mx-3" alt=""><a
+                    class="navbar-brand ms-start" asp-area="" asp-controller="Home"
+                    asp-action="Index"><b>Shopen</b>Hauer</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -25,37 +40,37 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home"
-                                asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Strona Główna</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Product"
-                                asp-action="Index">Products</a>
+                                asp-action="Index">Produkty</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home"
-                                asp-action="Categories">Categories</a>
-                        </li>
-                        @if(User.IsInRole("Admin"))
+                        @if (User.IsInRole("Admin"))
                         {
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <a class="nav-link dropdown-toggle" id="adminDropdown" role="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
                                     Admin
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="adminDropdown">
-                                    <li><a class="dropdown-item" href="@Url.Action("Index", "Admin")"> Zarządzaj Produktami</a></li>
+                                    <li>
+                                        <a class="dropdown-item" href="@Url.Action("Index", "Admin")"> Zarządzaj
+                                            Produktami</a>
+                                        <a class="dropdown-item" href="@Url.Action("Index", "User")"> Zarządzaj
+                                            Użytkownikami</a>
+                                            
+                                        </li>
                                 </ul>
                             </li>
                         }
 
                     </ul>
                     <ul class="navbar-nav ms-auto">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark fa-facart" asp-area="">
+                        <li class="nav-item position-relative">
+                            <a class="nav-link text-dark" asp-controller="ShoppingCart" asp-action="Index">
                                 <i class="fa fa-cart-shopping"></i>
+                                <span class="badge  rounded-pill position-absolute cart-badge">0</span>
                             </a>
                         </li>
                     </ul>
@@ -64,26 +79,71 @@
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+
+    <main role="main" class="pb-3" style="margin-bottom: 100px; margin-top: 70px;">
+        @RenderBody()
+    </main>
 
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - Project - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+
+    <footer class="footer">
+        <div class="bg-primary text-center py-3 text-white">
+            <a href="/About" class="text-white text-decoration-none mx-3">O nas</a>
+            <a href="/FAQ" class="text-white text-decoration-none mx-3">FAQ</a>
+            <a href="/PrivacyPolicy" class="text-white text-decoration-none mx-3">Privacy Policy</a>
+        </div>
+        <div class="bg-dark py-4">
+            <p class="text-center text-white mb-0">© 2024 Shopenhauer. Wszelkie prawa zastrzeżone.</p>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
+    <script>
+        function updateCartBadge() {
+            console.log("Wywołanie updateCartBadge()...");
+            fetch('/ShoppingCart/GetCartItemCount')
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Odpowiedź serwera:", data);
+                    const badge = document.querySelector('a.nav-link[href="/ShoppingCart"] .badge');
+                    if (!badge) {
+                        console.error("Nie znaleziono elementu badge w DOM!");
+                        return;
+                    }
+                    badge.textContent = data.cartItemCount; // Ustaw nową wartość badge
+                    badge.style.display = data.cartItemCount > 0 ? "inline-block" : "none";
+                    console.log("Badge zaktualizowany do:", data.cartItemCount);
+                })
+                .catch(error => console.error("Błąd podczas aktualizacji badge:", error));
+        }
+
+        // Wywołaj funkcję po załadowaniu DOM
+        document.addEventListener("DOMContentLoaded", updateCartBadge);
+    </script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>
-
+<script>
+    // Wyświetl dane sesji
+    fetch('/Debug/Session')
+        .then(response => response.json())
+        .then(data => {
+            console.log("Sesja: ", data);
+            const debugDiv = document.createElement('div');
+            debugDiv.style.position = 'fixed';
+            debugDiv.style.bottom = '10px';
+            debugDiv.style.right = '10px';
+            debugDiv.style.backgroundColor = 'rgba(0,0,0,0.7)';
+            debugDiv.style.color = 'white';
+            debugDiv.style.padding = '10px';
+            debugDiv.style.borderRadius = '5px';
+            debugDiv.innerText = `Sesja: ${JSON.stringify(data)}`;
+            document.body.appendChild(debugDiv);
+        })
+        .catch(error => console.error("Błąd sesji:", error));
+</script>
 
 
 

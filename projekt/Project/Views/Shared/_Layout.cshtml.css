@@ -43,7 +43,20 @@ button.accept-policy {
   position: absolute;
   bottom: 0;
   width: 100%;
-  white-space: nowrap;
-  line-height: 60px;
+  line-height: 10px;
 }
 
+.cart-badge {
+  top: -0.5px;
+  right: -3px;
+  position: absolute;
+  font-size: 0.5rem;
+  min-width: 16px;
+  height: px;
+  line-height: 18px;
+  text-align: center;
+  padding: 0;
+  border-radius: 50%;
+  background-color: #dc3545;
+  color: white;
+}

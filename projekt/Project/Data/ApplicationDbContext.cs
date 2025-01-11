@@ -22,6 +22,8 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>
 	public DbSet<Brand> Brands { get; set; }
 	public DbSet<SpecificationDefinition> SpecificationDefinitions { get; set; }
 	public DbSet<ProductDetails> ProductSpecifications { get; set; }
+	public DbSet<Order> Orders	 { get; set; }
+	public DbSet<OrderItem> OrderItems { get; set; }
 
 	protected override void OnModelCreating(ModelBuilder builder)
 	{

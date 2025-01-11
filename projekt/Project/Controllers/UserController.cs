@@ -33,7 +33,7 @@ namespace Project.Controllers
 			foreach (var user in users)
 			{
 				var roles = await userManager.GetRolesAsync(await userManager.FindByIdAsync(user.Id));
-				user.Roles = string.Join(", ", roles);
+                user.Roles = string.Join(", ", roles);
 			}
 
 

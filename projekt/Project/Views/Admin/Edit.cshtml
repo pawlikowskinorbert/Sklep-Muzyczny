@@ -83,7 +83,7 @@
                 // Funkcja do załadowania specyfikacji
                 function loadSpecifications(productTypeId) {
                     $.ajax({
-                        url: '@Url.Action("GetSpecifications", "Admin")',
+                        url: '@Url.Action("GetSpecifications", "Admin","Pracownik")',
                         type: 'GET',
                         data: { productTypeId: productTypeId },
                         success: function (specs) {

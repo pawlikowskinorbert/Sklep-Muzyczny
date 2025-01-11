@@ -90,7 +90,7 @@ namespace Project.Controllers
 				{
 					if (!user.IsActive)
 					{
-						ModelState.AddModelError(string.Empty, "Your account has been deactivated. Please contact the administrator.");
+						ModelState.AddModelError(string.Empty, "Twoje konto zostało dezaktywowane. Proszę skontaktować się z administratorem.");
 						return View(model);
 					}
 					

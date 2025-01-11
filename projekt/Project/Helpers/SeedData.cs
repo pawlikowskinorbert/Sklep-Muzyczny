@@ -93,7 +93,7 @@ namespace Project.Helpers
 
 		private static async Task SeedRolesAsync(RoleManager<IdentityRole> roleManager)
 		{
-			string[] roleNames = { "Użytkownik", "Admin", "Pracownik" };
+			string[] roleNames = { "User", "Admin", "Pracownik" };
 
 			foreach (var role in roleNames)
 			{

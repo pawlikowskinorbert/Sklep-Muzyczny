@@ -10,7 +10,7 @@
                 <th>Nazwa użytkownika</th>
                 <th>Email</th>
                 <th>Jest aktywne</th>
-                <th>Role</th>
+                <th>Rola</th>
                 <th>Akcje</th>
             </tr>
         </thead>
@@ -21,7 +21,7 @@
                     <td>@user.UserName</td>
                     <td>@user.Email</td>
                     <td>@(user.IsActive ? "Tak" : "Nie")</td>
-                    <td>@user.Roles</td>
+                    <td>@user.Roles.Replace("User","Użytkownik")</td>
                     <td>
                         @if (user.IsActive)
                         {

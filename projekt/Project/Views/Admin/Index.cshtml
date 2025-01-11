@@ -117,8 +117,8 @@
                             <td>@product.Price $</td>
                             <td>@(product.Brand?.Name ?? "Unknown")</td>
                             <td>@(product.ProductType?.Name ?? "Unknown")</td>
-    
-                            @if (User.IsInRole("Admin"))
+
+                            @if (User.IsInRole("Admin") || User.IsInRole("Pracownik"))
                             {
                                 <td class=" mt-4 pb-5 d-flex justify-content-center align-items-center">
                                     <a asp-action="Edit" class="btn btn-sm btn-primary" asp-route-id="@product.Id">Edytuj</a>
@@ -144,7 +144,7 @@
             </tbody>
         </table>
     
-        @if (User.IsInRole("Admin"))
+        @if (User.IsInRole("Admin") || User.IsInRole("Pracownik"))
         {
             <p>
                 <a asp-action="Create" class="btn btn-primary">Dodaj Nowy Produkt</a>

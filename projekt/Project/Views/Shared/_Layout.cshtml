@@ -46,7 +46,7 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Product"
                                 asp-action="Index">Produkty</a>
                         </li>
-                        @if (User.IsInRole("Admin"))
+                        @if (User.IsInRole("Admin") || User.IsInRole("Pracownik"))
                         {
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" id="adminDropdown" role="button"
@@ -55,12 +55,16 @@
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="adminDropdown">
                                     <li>
-                                        <a class="dropdown-item" href="@Url.Action("Index", "Admin")"> Zarządzaj
-                                            Produktami</a>
-                                        <a class="dropdown-item" href="@Url.Action("Index", "User")"> Zarządzaj
-                                            Użytkownikami</a>
-                                            
+                                        <!-- Widoczne dla Admin i Pracownik -->
+                                        <a class="dropdown-item" href="@Url.Action("Index", "Admin")"> Zarządzaj Produktami</a>
+                                    </li>
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <!-- Widoczne tylko dla Admin -->
+                                        <li>
+                                            <a class="dropdown-item" href="@Url.Action("Index", "User")"> Zarządzaj Użytkownikami</a>
                                         </li>
+                                    }
                                 </ul>
                             </li>
                         }

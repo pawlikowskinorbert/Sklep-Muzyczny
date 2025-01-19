@@ -213,8 +213,8 @@ namespace Project.Helpers
 			var users = new[]
 			{
 				new  {UserName = "Admin", FirstName = "Admin", LastName = "Admin", Email= "admin@123", Password = "Admin@123", Role = "Admin"},
-				new  {UserName = "Pudzian", FirstName = "Marcin", LastName = "Pudzianowski", Email= "pudzian@123", Password = "Pudzian@123", Role = "Użytkownik"},
-				new  {UserName = "Malysz", FirstName = "Adam", LastName = "Malysz", Email= "malysz@123", Password = "Malysz@123" , Role = "Użytkownik" },
+				new  {UserName = "Pudzian", FirstName = "Marcin", LastName = "Pudzianowski", Email= "pudzian@123", Password = "Pudzian@123", Role = "User"},
+				new  {UserName = "Malysz", FirstName = "Adam", LastName = "Malysz", Email= "malysz@123", Password = "Malysz@123" , Role = "User" },
                 new  {UserName = "Kubica", FirstName = "Robert", LastName = "Kubica", Email= "kubica@123", Password = "Kubica@123" , Role = "Pracownik" },
 
             };
